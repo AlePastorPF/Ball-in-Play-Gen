@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Build script for the San Isidro Club — Ball in Play / Secuencias Largas dashboard.
+Build script for the URBA — Ball in Play / Secuencias Largas dashboard.
 
 Reads every .csv in DATA_DIR (one file = one partido, same format as the
 original TOP 14 URBA export: Session Start Date, Event, Session Name,
@@ -38,27 +38,28 @@ except ImportError:
     sys.exit(1)
 
 # ---------------------------------------------------------------------------
+# Own club whose header/login logo gets rendered at a larger size (see
+# build_logos() below). Set this to the filename (without extension) of your
+# club's crest inside assets/logos/.
+# ---------------------------------------------------------------------------
+OWN_CLUB_LOGO_KEY = "URBA"
+
+# ---------------------------------------------------------------------------
 # Club name -> logo filename mapping.
 # Add new entries here (and drop a matching image into assets/logos/) whenever
 # a new rival enters the fixture list. The key is matched against the
 # "Partido" column after stripping a trailing " 2" / " 3" / " II" / " III"
 # (second/third team suffix). If a club has no entry here, its own name
 # (spaces preserved) is used as the lookup key against the logos folder.
+#
+# Empty for now — fill it in as rivals appear in your CSVs, e.g.:
+#   CLUB_KEY_MAP = {
+#       "Club Nombre Largo": "Club_Nombre_Largo",   # -> assets/logos/Club_Nombre_Largo.png
+#   }
 # ---------------------------------------------------------------------------
 CLUB_KEY_MAP = {
-    "LPRC": "La_Plata",
-    "LMRC": "Los_Matreros",
-    "Los Tilos": "Los_Tilos",
-    "Newman": "Newman",
-    "Alumni": "Alumni",
-    "Champagnat": "Champagnat",
-    "BAC": "BAC",
     "CUBA": "CUBA",
-    "BA": "BA",
     "CASI": "CASI",
-    "Hindu": "Hindu",
-    "Plaza": "Plaza",
-    "CRBV": "CRBV",
 }
 
 OUTCOME_MAP = {
@@ -122,6 +123,23 @@ def categorize(dur):
     return ">120s"
 
 
+def parse_flexible_date(date_str):
+    """Best-effort parse of Session Start Date across the date formats seen
+    in different tagging-software exports (M/D/YYYY, DD-MM-YY, YYYY-MM-DD...).
+    Returns a datetime.date, or None if nothing matched."""
+    from datetime import datetime
+    date_str = (date_str or "").strip()
+    if not date_str:
+        return None
+    for fmt in ("%m/%d/%Y", "%m/%d/%y", "%d-%m-%Y", "%d-%m-%y",
+                "%Y-%m-%d", "%d/%m/%Y", "%d/%m/%y"):
+        try:
+            return datetime.strptime(date_str, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
 def parse_csv_file(path, fallback_fecha):
     with open(path, encoding="utf-8-sig", newline="") as fh:
         rows = [r for r in csv.DictReader(fh) if (r.get("Tag Description") or "").strip() == "Ball in Play"]
@@ -143,10 +161,20 @@ def parse_csv_file(path, fallback_fecha):
     date_str = g(rows[0], "Session Start Date")
     session_name = g(rows[0], "Session Name")
 
+    # "Fecha" (matchday number) comes from a digit inside Session Name when
+    # present (e.g. "Fecha 7" -> 7). Some exports instead name the session
+    # after the fixture itself (e.g. "Tilos - CUBA", no digit) — in that case
+    # we flag it as non-explicit so build_dataset() can number these matches
+    # in real chronological order (by Session Start Date) rather than by
+    # whatever order the files happened to be read from disk.
     fecha = fallback_fecha
+    fecha_explicit = False
     m = re.search(r"(\d+)", session_name)
     if m:
         fecha = int(m.group(1))
+        fecha_explicit = True
+
+    parsed_date = parse_flexible_date(date_str)
 
     ck = club_key(partido)
 
@@ -223,7 +251,8 @@ def parse_csv_file(path, fallback_fecha):
     n_classified = n_green + n_red
 
     match = {
-        "fecha": fecha, "date": date_str, "partido": partido, "club_key": ck, "resultado": resultado,
+        "fecha": fecha, "fecha_explicit": fecha_explicit, "parsed_date": parsed_date,
+        "date": date_str, "partido": partido, "club_key": ck, "resultado": resultado,
         "rueda": rueda, "etapa": etapa, "session_start": session_start, "session_end": session_end,
         "session_dur_sec": round(session_dur, 1) if session_dur is not None else None,
         "session_dur_mmss": fmt_mmss(session_dur) if session_dur is not None else None,
@@ -260,6 +289,26 @@ def build_dataset(data_dir):
         matches.append(match)
         issues.extend(file_issues)
         tagged_sequences.extend(tagged)
+
+    # Renumber "fecha" for matches where it wasn't explicit in Session Name
+    # (e.g. Session Name = "Tilos - CUBA" instead of "Fecha 7"): order those
+    # chronologically by the parsed match date instead of by file-read order,
+    # continuing the numbering after the highest explicit "Fecha N" found.
+    explicit = [m for m in matches if m["fecha_explicit"]]
+    implicit = [m for m in matches if not m["fecha_explicit"]]
+    if implicit:
+        implicit.sort(key=lambda m: (m["parsed_date"] is None, m["parsed_date"], m["partido"]))
+        next_fecha = (max((m["fecha"] for m in explicit), default=0)) + 1
+        for offset, m in enumerate(implicit):
+            m["fecha"] = next_fecha + offset
+        if any(m["parsed_date"] is None for m in implicit):
+            issues.append(
+                "Aviso: alguna planilla sin número de 'Fecha' explícito en Session Name tampoco tenía "
+                "una 'Session Start Date' interpretable; se numeró al final, en el orden en que se leyó el archivo."
+            )
+    for m in matches:
+        del m["fecha_explicit"]
+        del m["parsed_date"]
 
     matches.sort(key=lambda m: m["fecha"])
     if not matches:
@@ -386,12 +435,12 @@ def build_logos(logos_dir):
         thumb.save(buf, format="PNG", optimize=True)
         logos[name] = "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode("ascii")
 
-        if name.upper() == "SIC":
+        if name.upper() == OWN_CLUB_LOGO_KEY.upper():
             header = im.copy()
             header.thumbnail(LOGO_HEADER_SIZE, Image.LANCZOS)
             buf2 = io.BytesIO()
             header.save(buf2, format="PNG", optimize=True)
-            logos["SIC_header"] = "data:image/png;base64," + base64.b64encode(buf2.getvalue()).decode("ascii")
+            logos[f"{OWN_CLUB_LOGO_KEY}_header"] = "data:image/png;base64," + base64.b64encode(buf2.getvalue()).decode("ascii")
     return logos
 
 
