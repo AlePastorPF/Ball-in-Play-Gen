@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>San Isidro Club — Ball in Play / Secuencias Largas</title>
+<title>URBA — Ball in Play / Secuencias Largas</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -18,9 +18,9 @@
   --text:#152130;
   --text-dim:#5c6b7a;
   --text-faint:#8996a4;
-  --sic-blue:#2390cf;
-  --sic-blue-soft:rgba(35,144,207,.10);
-  --sic-blue2:#106893;
+  --club-primary:#8f0d06;
+  --club-primary-soft:rgba(143,13,6,.08);
+  --club-primary2:#a9781f;
   --green:#12946a;
   --green-soft:rgba(18,148,106,.11);
   --red:#e0405c;
@@ -45,33 +45,33 @@ body{padding-bottom:60px;}
 }
 .header::after{
   content:""; position:absolute; top:-60px; right:-80px; width:380px; height:380px;
-  background:radial-gradient(circle, var(--sic-blue-soft) 0%, transparent 70%); pointer-events:none;
+  background:radial-gradient(circle, var(--club-primary-soft) 0%, transparent 70%); pointer-events:none;
 }
-.header-logo{width:64px; height:64px; flex-shrink:0; filter:drop-shadow(0 0 14px rgba(35,144,207,.35));}
+.header-logo{width:64px; height:64px; flex-shrink:0; object-fit:contain; filter:drop-shadow(0 0 14px rgba(143,13,6,.35));}
 .header-text{flex:1; min-width:260px;}
 .eyebrow{
   font-family:var(--mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--sic-blue2); margin-bottom:8px; display:flex; align-items:center; gap:8px;
+  color:var(--club-primary2); margin-bottom:8px; display:flex; align-items:center; gap:8px;
 }
-.eyebrow::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--sic-blue); box-shadow:0 0 8px var(--sic-blue);}
+.eyebrow::before{content:""; width:6px; height:6px; border-radius:50%; background:var(--club-primary); box-shadow:0 0 8px var(--club-primary);}
 h1{
   font-family:var(--display); font-size:clamp(22px,3vw,30px); font-weight:800; letter-spacing:-.01em; line-height:1.08;
   text-transform:uppercase;
 }
 h1 .club-name{color:var(--text);}
-h1 .sub{display:block; color:var(--sic-blue2); font-weight:700; font-size:.78em; margin-top:4px; letter-spacing:.01em;}
+h1 .sub{display:block; color:var(--club-primary2); font-weight:700; font-size:.78em; margin-top:4px; letter-spacing:.01em;}
 .subtitle{color:var(--text-dim); margin-top:9px; max-width:760px; font-size:13px; line-height:1.55;}
 .update-btn-wrap{display:flex; flex-direction:column; align-items:flex-end; gap:6px;}
 .update-btn{
   font-family:var(--display); font-weight:700; font-size:12.5px; letter-spacing:.03em;
-  background:var(--sic-blue); color:#ffffff; border:none; padding:11px 18px; border-radius:7px; cursor:pointer;
+  background:var(--club-primary); color:#ffffff; border:none; padding:11px 18px; border-radius:7px; cursor:pointer;
   display:flex; align-items:center; gap:8px; transition:filter .12s, box-shadow .12s;
-  box-shadow:0 4px 14px rgba(35,144,207,.32);
+  box-shadow:0 4px 14px rgba(143,13,6,.30);
 }
 .update-btn:hover{filter:brightness(1.1);}
 .update-note{font-size:10.5px; color:var(--text-faint); max-width:180px; text-align:right; line-height:1.4;}
 #csvUploadInput{display:none;}
-.upload-status{font-family:var(--mono); font-size:11px; color:var(--sic-blue2); margin-top:4px;}
+.upload-status{font-family:var(--mono); font-size:11px; color:var(--club-primary2); margin-top:4px;}
 
 /* ---- Methodology callout ---- */
 .callout{
@@ -96,7 +96,7 @@ h1 .sub{display:block; color:var(--sic-blue2); font-weight:700; font-size:.78em;
 .filters select{background:var(--panel2); border:1px solid var(--border); color:var(--text); border-radius:5px; padding:6px 10px; font-size:12.5px; font-family:var(--sans); cursor:pointer;}
 .fgroup{display:flex; align-items:center; gap:6px;}
 .chip{font-family:var(--mono); font-size:11px; padding:4px 9px; border-radius:20px; border:1px solid var(--border); color:var(--text-dim); cursor:pointer; transition:all .12s; user-select:none;}
-.chip.active{background:var(--sic-blue-soft); border-color:var(--sic-blue); color:var(--sic-blue2);}
+.chip.active{background:var(--club-primary-soft); border-color:var(--club-primary); color:var(--club-primary2);}
 
 /* ---- multi-select dropdowns ---- */
 .msel-wrap{position:relative;}
@@ -106,7 +106,7 @@ h1 .sub{display:block; color:var(--sic-blue2); font-weight:700; font-size:.78em;
   align-items:center; gap:6px; min-width:120px; justify-content:space-between;
 }
 .msel-btn:hover{border-color:var(--text-dim);}
-.msel-btn.has-selection{border-color:var(--sic-blue); color:var(--sic-blue2); background:var(--sic-blue-soft);}
+.msel-btn.has-selection{border-color:var(--club-primary); color:var(--club-primary2); background:var(--club-primary-soft);}
 .msel-panel{
   position:absolute; top:calc(100% + 6px); left:0; z-index:80; min-width:260px; max-width:340px;
   background:var(--panel); border:1px solid var(--border); border-radius:8px; box-shadow:0 16px 32px rgba(21,33,48,.14);
@@ -114,12 +114,12 @@ h1 .sub{display:block; color:var(--sic-blue2); font-weight:700; font-size:.78em;
 }
 .msel-panel[hidden]{display:none;}
 .msel-actions{display:flex; gap:14px; padding:2px 6px 6px; border-bottom:1px solid var(--border); margin-bottom:2px;}
-.msel-action{font-family:var(--mono); font-size:10.5px; color:var(--sic-blue2); cursor:pointer; letter-spacing:.03em;}
+.msel-action{font-family:var(--mono); font-size:10.5px; color:var(--club-primary2); cursor:pointer; letter-spacing:.03em;}
 .msel-action:hover{text-decoration:underline;}
 .msel-list{max-height:280px; overflow-y:auto; display:flex; flex-direction:column; gap:1px;}
 .msel-item{display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:5px; cursor:pointer; font-size:12.5px; color:var(--text-dim);}
 .msel-item:hover{background:var(--panel);}
-.msel-item input[type="checkbox"]{accent-color:var(--sic-blue); width:14px; height:14px; flex-shrink:0; cursor:pointer;}
+.msel-item input[type="checkbox"]{accent-color:var(--club-primary); width:14px; height:14px; flex-shrink:0; cursor:pointer;}
 .msel-item img.msel-logo{width:15px; height:15px; object-fit:contain; border-radius:2px; flex-shrink:0;}
 .msel-item span{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
 .reset-btn{margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--text-faint); border:1px solid var(--border); background:transparent; padding:6px 12px; border-radius:5px; cursor:pointer;}
@@ -130,7 +130,7 @@ h1 .sub{display:block; color:var(--sic-blue2); font-weight:700; font-size:.78em;
 .section{padding:26px clamp(16px,3vw,40px) 6px;}
 .section-title{font-family:var(--display); font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.14em; color:var(--text-faint); display:flex; align-items:center; gap:10px; margin-bottom:14px;}
 .section-title::after{content:""; flex:1; height:1px; background:var(--border);}
-.section-num{font-family:var(--mono); color:var(--sic-blue);}
+.section-num{font-family:var(--mono); color:var(--club-primary);}
 
 /* ---- KPI cards ---- */
 .kpi-row{display:grid; grid-template-columns:repeat(5,1fr); gap:12px;}
@@ -138,10 +138,10 @@ h1 .sub{display:block; color:var(--sic-blue2); font-weight:700; font-size:.78em;
 .kpi-card .kpi-label{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-faint); margin-bottom:8px;}
 .kpi-card .kpi-value{font-family:var(--display); font-size:27px; font-weight:800; letter-spacing:-.02em; line-height:1;}
 .kpi-card .kpi-sub{font-size:11.5px; color:var(--text-dim); margin-top:6px;}
-.kpi-card.accent{border-top:2px solid var(--sic-blue);} .kpi-card.accent .kpi-value{color:var(--sic-blue2);}
+.kpi-card.accent{border-top:2px solid var(--club-primary);} .kpi-card.accent .kpi-value{color:var(--club-primary2);}
 .kpi-card.green-c{border-top:2px solid var(--green);} .kpi-card.green-c .kpi-value{color:var(--green);}
 .kpi-card.amber-c{border-top:2px solid var(--amber);} .kpi-card.amber-c .kpi-value{color:var(--amber);}
-.kpi-card.sky-c{border-top:2px solid var(--sic-blue2);} .kpi-card.sky-c .kpi-value{color:var(--sic-blue2);}
+.kpi-card.sky-c{border-top:2px solid var(--club-primary2);} .kpi-card.sky-c .kpi-value{color:var(--club-primary2);}
 
 /* ---- Grid layouts ---- */
 .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
@@ -156,8 +156,8 @@ h1 .sub{display:block; color:var(--sic-blue2); font-weight:700; font-size:.78em;
 
 /* ---- Insights ---- */
 .insights-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:12px;}
-.insight-card{background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:16px 18px; border-left:3px solid var(--sic-blue2); box-shadow:0 1px 3px rgba(21,33,48,.05), 0 8px 20px rgba(21,33,48,.04);}
-.insight-card h4{font-family:var(--display); font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--sic-blue2); margin-bottom:8px; font-weight:700;}
+.insight-card{background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:16px 18px; border-left:3px solid var(--club-primary2); box-shadow:0 1px 3px rgba(21,33,48,.05), 0 8px 20px rgba(21,33,48,.04);}
+.insight-card h4{font-family:var(--display); font-size:12.5px; text-transform:uppercase; letter-spacing:.04em; color:var(--club-primary2); margin-bottom:8px; font-weight:700;}
 .insight-card p{font-size:12.5px; line-height:1.65; color:var(--text-dim); margin-bottom:6px;}
 .insight-card p b{color:var(--text);}
 .insight-card .lbl{font-family:var(--mono); font-size:9.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-faint);}
@@ -210,19 +210,19 @@ footer{padding:30px clamp(16px,3vw,40px); color:var(--text-faint); font-size:11p
 }
 .login-gate::before{
   content:""; position:absolute; top:-20%; left:50%; transform:translateX(-50%); width:600px; height:600px;
-  background:radial-gradient(circle, var(--sic-blue-soft) 0%, transparent 70%); pointer-events:none;
+  background:radial-gradient(circle, var(--club-primary-soft) 0%, transparent 70%); pointer-events:none;
 }
 .login-card{
   position:relative; width:100%; max-width:360px; background:var(--panel); border:1px solid var(--border);
   border-radius:12px; padding:32px 30px 28px; text-align:center; box-shadow:0 24px 60px rgba(21,33,48,.16);
 }
-.login-logo{width:60px; height:60px; margin:0 auto 14px; display:block; filter:drop-shadow(0 0 14px rgba(35,144,207,.35));}
+.login-logo{width:60px; height:84px; margin:0 auto 14px; display:block; object-fit:contain; filter:drop-shadow(0 0 14px rgba(143,13,6,.35));}
 .login-eyebrow{
   font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; text-transform:uppercase;
-  color:var(--sic-blue2); margin-bottom:8px;
+  color:var(--club-primary2); margin-bottom:8px;
 }
 .login-title{font-family:var(--display); font-size:19px; font-weight:800; letter-spacing:-.01em; line-height:1.15; text-transform:uppercase;}
-.login-title .sub{display:block; color:var(--sic-blue2); font-weight:700; font-size:.72em; margin-top:4px;}
+.login-title .sub{display:block; color:var(--club-primary2); font-weight:700; font-size:.72em; margin-top:4px;}
 .login-divider{height:1px; background:var(--border); margin:20px 0 18px;}
 .login-form{display:flex; flex-direction:column; gap:5px; text-align:left;}
 .login-label{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-faint); margin-top:10px;}
@@ -231,12 +231,12 @@ footer{padding:30px clamp(16px,3vw,40px); color:var(--text-faint); font-size:11p
   background:var(--panel2); border:1px solid var(--border); color:var(--text); border-radius:6px;
   padding:9px 11px; font-size:13.5px; font-family:var(--sans); outline:none; transition:border-color .12s;
 }
-.login-input:focus{border-color:var(--sic-blue);}
+.login-input:focus{border-color:var(--club-primary);}
 .login-error{color:var(--red); font-size:12px; margin-top:10px; text-align:center;}
 .login-btn{
   margin-top:20px; font-family:var(--display); font-weight:700; font-size:13px; letter-spacing:.03em;
-  background:var(--sic-blue); color:#ffffff; border:none; padding:11px 18px; border-radius:7px; cursor:pointer;
-  transition:filter .12s, box-shadow .12s; box-shadow:0 4px 14px rgba(35,144,207,.32);
+  background:var(--club-primary); color:#ffffff; border:none; padding:11px 18px; border-radius:7px; cursor:pointer;
+  transition:filter .12s, box-shadow .12s; box-shadow:0 4px 14px rgba(143,13,6,.30);
 }
 .login-btn:hover{filter:brightness(1.1);}
 .logout-link{color:var(--text-faint); text-decoration:underline; cursor:pointer;}
@@ -248,9 +248,9 @@ footer{padding:30px clamp(16px,3vw,40px); color:var(--text-faint); font-size:11p
 <!-- ============ LOGIN GATE ============ -->
 <div id="loginGate" class="login-gate">
   <div class="login-card">
-    <img class="login-logo" id="loginLogo" alt="San Isidro Club">
+    <img class="login-logo" id="loginLogo" alt="URBA">
     <div class="login-eyebrow">Performance Analysis · Sports Science</div>
-    <h1 class="login-title"><span class="club-name">San Isidro Club</span><span class="sub">Ball in Play / Secuencias Largas</span></h1>
+    <h1 class="login-title"><span class="club-name">URBA</span><span class="sub">Ball in Play / Secuencias Largas</span></h1>
     <div class="login-divider"></div>
     <form id="loginForm" class="login-form" autocomplete="off">
       <label class="login-label" for="loginUser">Usuario</label>
@@ -266,11 +266,11 @@ footer{padding:30px clamp(16px,3vw,40px); color:var(--text-faint); font-size:11p
 <div id="dashboardContent" style="display:none;">
 
 <div class="header">
-  <img class="header-logo" id="headerLogo" alt="San Isidro Club">
+  <img class="header-logo" id="headerLogo" alt="URBA">
   <div class="header-text">
     <div class="eyebrow">Performance Analysis · Sports Science</div>
-    <h1><span class="club-name">San Isidro Club</span><span class="sub">Ball in Play / Secuencias Largas</span></h1>
-    <div class="subtitle">Top 14 URBA 2026 — Fase Regular. Análisis de Ball in Play, secuencias de juego &gt;60s y clasificación por resultado de jugada (Verde/Rojo) a partir del tagging de eventos.</div>
+    <h1><span class="club-name">URBA</span><span class="sub">Ball in Play / Secuencias Largas</span></h1>
+    <div class="subtitle">Ball in Play, secuencias largas y clasificación de jugadas (Verde/Rojo) a partir del tagging de eventos. Cargá tus planillas en <code>data/</code> para empezar a ver resultados acá.</div>
   </div>
   <div class="update-btn-wrap">
     <button class="update-btn" id="updateDataBtn">⟳ Actualizar datos</button>
@@ -456,7 +456,7 @@ footer{padding:30px clamp(16px,3vw,40px); color:var(--text-faint); font-size:11p
   </div>
 </div>
 
-<footer>San Isidro Club · Ball in Play / Secuencias Largas Dashboard · Fuente: planillas de sesión Top 14 URBA 2026 · Duración recalculada como Tag End − Tag Start · Clasificación Verde/Rojo por jugada tomada de Tag Notes (columna G) · Tipografía Mark Pro no disponible vía CDN público — sustituida por Manrope/Inter · <a href="#" id="logoutLink" class="logout-link">Cerrar sesión</a></footer>
+<footer>URBA · Ball in Play / Secuencias Largas Dashboard · Duración recalculada como Tag End − Tag Start · Clasificación Verde/Rojo por jugada tomada de Tag Notes (columna G) · Tipografía Mark Pro no disponible vía CDN público — sustituida por Manrope/Inter · <a href="#" id="logoutLink" class="logout-link">Cerrar sesión</a></footer>
 
 </div><!-- /#dashboardContent -->
 
@@ -465,11 +465,11 @@ const DATA = __DATA_JSON__;
 const CLUB_LOGOS = __LOGOS_JSON__;
 
 /* ---------- login gate (client-side only — not real security, just a soft filter) ---------- */
-const AUTH_USER = 'SIC';
-const AUTH_PASS = '1935Zanja';
+const AUTH_USER = 'URBA';
+const AUTH_PASS = 'Condor1899';
 const AUTH_KEY = 'sic_dashboard_auth_v1';
 
-document.getElementById('loginLogo').src = CLUB_LOGOS['SIC_header'] || CLUB_LOGOS['SIC'];
+document.getElementById('loginLogo').src = CLUB_LOGOS['URBA_header'] || CLUB_LOGOS['URBA'];
 
 function showDashboard(){
   document.getElementById('loginGate').style.display = 'none';
@@ -496,7 +496,7 @@ document.getElementById('logoutLink').addEventListener('click', (e)=>{
   location.reload();
 });
 
-document.getElementById('headerLogo').src = CLUB_LOGOS['SIC_header'] || CLUB_LOGOS['SIC'];
+document.getElementById('headerLogo').src = CLUB_LOGOS['URBA_header'] || CLUB_LOGOS['URBA'];
 
 /* ---------- helpers ---------- */
 const fmt1 = (n)=> (Math.round(n*10)/10).toString();
@@ -676,6 +676,21 @@ function ingestCSVFiles(fileList){
 /* ---------- Derived aggregates (recomputed whenever DATA.matches changes) ---------- */
 function recomputeDerived(){
   const matches = DATA.matches;
+
+  if(matches.length === 0){
+    DATA.kpi = {
+      mean_bip:0, median_bip:0, max_bip:0, max_bip_match:'—', min_bip:0, min_bip_match:'—',
+      std_bip:0, cv_bip:0, range_bip:0, n_long_total:0, max_long_seq_dur:0, max_long_seq_match:'—',
+      n_green_matches:0, n_red_matches:0, pearson_r:null, n_matches:0,
+      n_tagged:0, n_tagged_green:0, pct_verde_real:0,
+    };
+    DATA.cat_distribution = [];
+    DATA.rank_bip = []; DATA.rank_long = [];
+    DATA.wl_compare = { won:{n:0,avg_bip:0,avg_n_long:0,avg_long_dur:0,avg_pct_bip_from_long:0},
+                        lost:{n:0,avg_bip:0,avg_n_long:0,avg_long_dur:0,avg_pct_bip_from_long:0} };
+    DATA.outcome_breakdown = [];
+    return;
+  }
 
   // tagged_sequences (flat, ALL durations) rebuilt from all_sequences + long_sequences note info
   // we reconstruct by re-scanning: long_sequences already carry color/outcome; for short tagged ones we don't retain note info
@@ -883,7 +898,7 @@ function renderMetho(){
     <p><b>Duración de cada secuencia:</b> se usa el valor de la columna <b>"Tag Duration (secs)"</b> como fuente principal (coincide con Tag End − Tag Start en la gran mayoría de las filas). En <b>Fecha 2</b> se detectaron timestamps de Tag Start/Tag End superpuestos entre filas consecutivas, lo que inflaba el Ball in Play a ~37.5' si se calculaba como (End − Start); usando "Tag Duration (secs)" el valor correcto es <b>~28.7'</b>, consistente con el partido real. Por eso esta columna se usa como fuente principal en todo el torneo, con (Tag End − Tag Start) solo como respaldo en las pocas filas sin valor de duración cargado:</p>
     <ul>${issuesHtml}</ul>
     <p><b>Tipografía:</b> "Mark Pro" es una fuente comercial sin distribución en CDNs públicos, por lo que se sustituyó por <b>Manrope</b> (títulos/KPIs) e <b>Inter</b> (texto), con una paleta cercana en peso y geometría. Si tenés los archivos .woff/.woff2 con la licencia correspondiente, los puedo incorporar vía @font-face.</p>
-    <p><b>Colores:</b> paleta tomada del isotipo de San Isidro Club (celeste #2390CF, negro, blanco) sobre fondo oscuro tipo sports-science; verde/rojo se reservan para la clasificación de jugadas.</p>
+    <p><b>Colores:</b> paleta tomada del escudo de URBA (rojo #8F0D06, dorado #A9781F) sobre fondo claro; verde/rojo se reservan para la clasificación de jugadas y son tonos distintos al rojo institucional para evitar confusión visual.</p>
   `;
 }
 
@@ -1218,7 +1233,7 @@ function renderDist(){
   charts.dist = new Chart(ctx, {
     type:'bar',
     data:{ labels: cat.map(c=>c.category), datasets:[
-      {label:'Cantidad', data: cat.map(c=>c.count), backgroundColor:'rgba(35,144,207,.6)', borderRadius:3},
+      {label:'Cantidad', data: cat.map(c=>c.count), backgroundColor:'rgba(143,13,6,.55)', borderRadius:3},
     ]},
     options:{
       responsive:true, maintainAspectRatio:false,
@@ -1393,6 +1408,11 @@ document.querySelectorAll('#seqTable thead th').forEach(th=>{
 
 /* ---------- Insights ---------- */
 function renderInsights(){
+  if(DATA.matches.length === 0){
+    document.getElementById('insightsGrid').innerHTML = '';
+    document.getElementById('recsGrid').innerHTML = '';
+    return;
+  }
   const k = DATA.kpi, wl = DATA.wl_compare, cat = DATA.cat_distribution;
   const rankBip = DATA.rank_bip, rankLong = DATA.rank_long, ob = DATA.outcome_breakdown;
   const bestOutcome = ob.slice().sort((a,b)=>b.pct_green-a.pct_green)[0];
@@ -1453,9 +1473,40 @@ function renderInsights(){
 
 /* ---------- render all ---------- */
 function renderAll(){
+  if(DATA.matches.length === 0){
+    renderEmptyState();
+    return;
+  }
   renderKPIs(); renderBipMatch(); renderLongRank(); renderOutcomeStack(); renderOutcomeDonut();
   renderWL(); renderDist(); renderScatterDurMin(); renderScatterBipLong(); renderTimeline();
   renderHeatmap(); renderTable();
+}
+
+function renderEmptyState(){
+  Object.values(charts).forEach(ch=>{ try{ ch.destroy(); }catch(e){} });
+  charts = {};
+  const msg = `
+    <div style="grid-column:1/-1; text-align:center; padding:60px 20px; color:var(--text-faint);">
+      <div style="font-family:var(--display); font-weight:800; font-size:16px; color:var(--text-dim); margin-bottom:8px; text-transform:uppercase; letter-spacing:.04em;">
+        Todavía no hay partidos cargados
+      </div>
+      <div style="font-size:13px; max-width:420px; margin:0 auto; line-height:1.6;">
+        Subí tu primera planilla <code>.csv</code> a la carpeta <code>data/</code> del repo
+        (mismo formato de siempre: Tag Description, Tag Notes, Tag Start, Tag End, Tag Duration,
+        Partido, Resultado, Rueda, Etapa). El sitio se reconstruye solo en 1-2 minutos.
+      </div>
+    </div>`;
+  document.getElementById('kpiRow').innerHTML = msg;
+  ['chartBipMatch','chartLongRank','chartOutcomeStack','chartOutcomeDonut','chartWL','chartDist',
+   'chartScatterDurMin','chartScatterBipLong','chartTimeline'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.getContext('2d').clearRect(0,0,el.width,el.height);
+  });
+  document.getElementById('heatmapTable').innerHTML = '';
+  document.getElementById('seqTableBody').innerHTML = '';
+  document.getElementById('resultCount').textContent = '0 partidos cargados';
+  document.getElementById('donutCenter').textContent = '';
+  document.getElementById('corrDesc').textContent = '';
 }
 
 /* ---------- boot ---------- */
@@ -1465,8 +1516,8 @@ function boot(){
   colorGreen = cs.getPropertyValue('--green').trim();
   colorRed = cs.getPropertyValue('--red').trim();
   colorGrey = cs.getPropertyValue('--grey').trim();
-  colorAccent = cs.getPropertyValue('--sic-blue').trim();
-  colorAccent2 = cs.getPropertyValue('--sic-blue2').trim();
+  colorAccent = cs.getPropertyValue('--club-primary').trim();
+  colorAccent2 = cs.getPropertyValue('--club-primary2').trim();
   colorAmber = cs.getPropertyValue('--amber').trim();
   colorTextDim = cs.getPropertyValue('--text-dim').trim();
   colorBorder = cs.getPropertyValue('--border').trim();
