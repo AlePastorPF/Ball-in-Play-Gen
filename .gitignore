@@ -1,0 +1,11 @@
+# Build output — generated fresh by GitHub Actions on every deploy, not versioned.
+dist/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS/editor noise
+.DS_Store
+*.swp
