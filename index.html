@@ -365,6 +365,16 @@ footer{padding:30px clamp(16px,3vw,40px); color:var(--text-faint); font-size:11p
   </div>
 </div>
 
+<!-- FILA 3b — Verde vs Rojo por partido -->
+<div class="section">
+  <div class="section-title"><span class="section-num">03b</span> Verde vs Rojo por Partido — % de Éxito</div>
+  <div class="panel">
+    <div class="panel-title">Secuencias Verde y Rojo en todos los partidos</div>
+    <div class="panel-desc">Dos columnas por partido (Verde / Rojo). Sobre cada par se indica el % de éxito = Verde ÷ (Verde + Rojo). Responde a los filtros de Partido, Resultado y Duración.</div>
+    <div class="chart-wrap xtall"><canvas id="chartMatchVR"></canvas></div>
+  </div>
+</div>
+
 <!-- FILA 4 — Long sequences context -->
 <div class="section">
   <div class="section-title"><span class="section-num">04</span> Contexto de Resultado y Distribución de Duración</div>
@@ -1203,6 +1213,59 @@ function renderOutcomeDonut(){
   document.getElementById('donutCenter').textContent = total ? `${pct}% de éxito · n=${total}` : 'Sin secuencias clasificadas en este filtro';
 }
 
+function renderMatchVR(){
+  destroyChart('matchVR');
+  const ms = getFilteredMatches().slice().sort((a,b)=>a.fecha-b.fecha);
+  let tg = getFilteredTagged();
+  if(state.dur.length) tg = tg.filter(s=>state.dur.includes(categorizeDur(s.dur)));
+  const stats = ms.map(m=>{
+    const t = tg.filter(s=>String(s.fecha)===String(m.fecha) && s.partido===m.partido);
+    const g = t.filter(s=>s.color==='green').length, r = t.filter(s=>s.color==='red').length;
+    return {g, r, pct: (g+r)? Math.round(g/(g+r)*1000)/10 : null};
+  });
+  const ctx = document.getElementById('chartMatchVR');
+  const pctPlugin = {
+    id:'matchVRpct',
+    afterDatasetsDraw(chart){
+      const c = chart.ctx;
+      stats.forEach((st,i)=>{
+        const mG = chart.getDatasetMeta(0).data[i], mR = chart.getDatasetMeta(1).data[i];
+        if(!mG||!mR) return;
+        const x = (mG.x+mR.x)/2, top = Math.min(mG.y, mR.y) - 20;
+        c.save(); c.textAlign='center'; c.textBaseline='bottom';
+        c.font = "800 12px Manrope, Inter, sans-serif";
+        c.fillStyle = st.pct===null ? colorTextDim : (st.pct>=50 ? '#12946a' : '#e0405c');
+        c.fillText(st.pct===null ? '—' : st.pct.toFixed(1).replace('.0','')+'%', x, top);
+        c.restore();
+      });
+    }
+  };
+  charts.matchVR = new Chart(ctx, {
+    type:'bar',
+    data:{ labels: ms.map(m=>'F'+m.fecha), datasets:[
+      {label:'Verde', data:stats.map(s=>s.g), backgroundColor:'rgba(18,148,106,.8)', borderRadius:3},
+      {label:'Rojo', data:stats.map(s=>s.r), backgroundColor:'rgba(224,64,92,.8)', borderRadius:3},
+    ]},
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      layout:{padding:{top:30}},
+      datasets:{ bar:{ barPercentage:.9, categoryPercentage:.8 } },
+      plugins:{
+        legend:{position:'top', labels:{boxWidth:10,font:{size:10.5}}},
+        tooltip:{callbacks:{
+          title:(it)=>{const m=ms[it[0].dataIndex]; return matchLabel(m);},
+          afterBody:(it)=>{const st=stats[it[0].dataIndex]; return st.pct===null?'Sin secuencias clasificadas':`% de éxito: ${st.pct}%  (n=${st.g+st.r})`;}
+        }}
+      },
+      scales:{
+        x:{grid:{display:false}, ticks:{padding:30, font:{size:10.5}}},
+        y:{beginAtZero:true, grid:{color:colorBorder}, title:{display:true,text:'secuencias', font:{size:10}}, ticks:{precision:0}}
+      }
+    },
+    plugins:[xLogoPlugin(ms.map(m=>m.club_key)), barValueLabelPlugin({}), pctPlugin]
+  });
+}
+
 function renderWL(){
   destroyChart('wl');
   const wl = DATA.wl_compare;
@@ -1477,7 +1540,7 @@ function renderAll(){
     renderEmptyState();
     return;
   }
-  renderKPIs(); renderBipMatch(); renderLongRank(); renderOutcomeStack(); renderOutcomeDonut();
+  renderKPIs(); renderBipMatch(); renderLongRank(); renderOutcomeStack(); renderOutcomeDonut(); renderMatchVR();
   renderWL(); renderDist(); renderScatterDurMin(); renderScatterBipLong(); renderTimeline();
   renderHeatmap(); renderTable();
 }
@@ -1497,7 +1560,7 @@ function renderEmptyState(){
       </div>
     </div>`;
   document.getElementById('kpiRow').innerHTML = msg;
-  ['chartBipMatch','chartLongRank','chartOutcomeStack','chartOutcomeDonut','chartWL','chartDist',
+  ['chartBipMatch','chartLongRank','chartOutcomeStack','chartOutcomeDonut','chartMatchVR','chartWL','chartDist',
    'chartScatterDurMin','chartScatterBipLong','chartTimeline'].forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.getContext('2d').clearRect(0,0,el.width,el.height);
